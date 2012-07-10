@@ -9,6 +9,9 @@
 #import "LiveAuthHelper.h"
 
 @implementation LiveAuthDialog
+{
+    BOOL _finish;
+}
 
 @synthesize webView, canDismiss;
 
@@ -58,6 +61,8 @@
     
     self.webView.delegate = self;
     
+    self.title = @"Windows Live";
+    
     // Override the left button to show a back button
     // which is used to dismiss the modal view    
     UIImage *buttonImage = [LiveAuthHelper getBackButtonImage]; 
@@ -74,7 +79,7 @@
     
     //create a UIBarButtonItem with the button as a custom view
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
-                                              initWithCustomView:button]autorelease];  
+                                              initWithCustomView:button]autorelease];
     
     //Load the Url request in the UIWebView.
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:_startUrl];
@@ -93,6 +98,13 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (!_finish)
+        [_delegate authDialogCanceled];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -123,6 +135,7 @@
     
     if ([[url absoluteString] hasPrefix: _endUrl]) 
     {
+        _finish = YES;
         [_delegate authDialogCompletedWithResponse:url];
         return NO;
     } 

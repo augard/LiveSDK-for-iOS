@@ -14,6 +14,13 @@
 #import "LiveConstants.h"
 #import "UrlHelper.h"
 
+@interface UIBarButtonItem (ISTHelper)
+
++ (id) itemWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++ (id) itemWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action;
+
+@end
+
 @implementation LiveAuthRequest
 
 @synthesize  authCode = _authCode,
@@ -111,7 +118,10 @@ currentViewController:(UIViewController *)currentViewController
         // Adding a checking logic and wait for the modal dialog to appear before we can dismiss it.
         if (self.authViewController.canDismiss) 
         {
-            [self.currentViewController dismissModalViewControllerAnimated:YES];
+            if ([self.currentViewController isKindOfClass:[UINavigationController class]])
+                [(UINavigationController *)self.currentViewController popViewControllerAnimated:YES];
+            else
+                [self.currentViewController dismissModalViewControllerAnimated:YES];
             self.currentViewController = nil;  
             self.authViewController = nil;
         }
@@ -154,7 +164,7 @@ currentViewController:(UIViewController *)currentViewController
                                                          redirectUri:[LiveAuthHelper getDefaultRedirectUrlString] 
                                                               scopes:_scopes];
 
-    NSString *nibName = [LiveAuthHelper isiPad]? @"LiveAuthDialog_iPad" : @"LiveAuthDialog_iPhone";
+    NSString *nibName = @"LiveAuthDialog_iPhone";
     
     self.authViewController = [[LiveAuthDialog alloc] initWithNibName:nibName
                                                                bundle:[LiveAuthHelper getSDKBundle] 
@@ -162,12 +172,28 @@ currentViewController:(UIViewController *)currentViewController
                                                                endUrl:[LiveAuthHelper getDefaultRedirectUrlString]
                                                              delegate:self];
     
-    // Create a Navigation controller
-    UINavigationController *modalDialog = [[[UINavigationController alloc]initWithRootViewController:self.authViewController]
-                                          autorelease];
-    
-    [self.currentViewController presentModalViewController:modalDialog 
-                                                  animated:YES];
+    if ([self.currentViewController isKindOfClass:[UINavigationController class]]) {
+        [self.currentViewController view];
+        [self.currentViewController.navigationItem setLeftBarButtonItem:nil];
+        [(UINavigationController *)self.currentViewController pushViewController:self.authViewController animated:YES];
+    } else {
+        
+        // Create a Navigation controller
+        UINavigationController *modalDialog = [[[UINavigationController alloc]initWithRootViewController:self.authViewController]
+                                               autorelease];
+        
+        
+        if ([self.currentViewController respondsToSelector:@selector(initNavigationBar:)]) {
+            [self.currentViewController performSelector:@selector(initNavigationBar:) withObject:modalDialog.navigationBar];
+            UIBarButtonItem *button = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                              target:self.authViewController action:@selector(dismissView:)];
+            [self.currentViewController view];
+            [self.currentViewController.navigationItem setLeftBarButtonItem:button];
+            [modalDialog setModalPresentationStyle:UIModalPresentationFormSheet];
+        }
+        [self.currentViewController presentModalViewController:modalDialog
+                                                      animated:YES];
+    }
 }
 
 - (void)retrieveToken
