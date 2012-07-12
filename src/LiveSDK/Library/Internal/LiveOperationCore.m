@@ -49,7 +49,7 @@
         _method = [method copy];
         _path = [path copy];
         _requestBody = [requestBody retain];
-        _delegate = [delegate retain];
+        _delegate = delegate;
         _userState = [userState retain]; 
         _liveClient = [liveClient retain];
         httpError = nil;
@@ -72,7 +72,7 @@
         _method = [method copy];
         _path = [path copy];
         _inputStream = [inputStream retain];
-        _delegate = [delegate retain];
+        _delegate = delegate;
         _userState = [userState retain]; 
         _liveClient = [liveClient retain];
         completed = NO;
@@ -83,10 +83,11 @@
 
 - (void)dealloc 
 {
+    _delegate = nil;
+    
     [_method release];
     [_path release];
     [_requestBody release];
-    [_delegate release];
     [_userState release];
     [_liveClient release];
     [_inputStream release];
@@ -254,7 +255,7 @@
     
     if (error == nil)
     {
-        self.rawResult = textResponse  ;
+        self.rawResult = textResponse;
         self.result = response;
         
         if ([_delegate respondsToSelector:@selector(liveOperationSucceeded:)])

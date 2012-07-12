@@ -33,9 +33,9 @@
     {
         _clientId = [clientId copy];
         _scopes = [scopes copy];
-        _storage = [[[LiveAuthStorage alloc] initWithClientId:clientId] retain];            
+        _storage = [[LiveAuthStorage alloc] initWithClientId:clientId];            
         _status = LiveAuthUnknown;
-        _session = nil;
+        _session = nil; 
     }
     
     [self refreshSessionWithDelegate:delegate
@@ -134,13 +134,12 @@
     if ([LiveAuthHelper shouldRefreshToken:_session 
                               refreshToken:_storage.refreshToken]) 
     {
-        authRefreshRequest = [[[LiveAuthRefreshRequest alloc] initWithClientId:_clientId 
+        authRefreshRequest = [[LiveAuthRefreshRequest alloc] initWithClientId:_clientId 
                                                                         scope:_scopes 
                                                                  refreshToken:_storage.refreshToken
                                                                      delegate:delegate
                                                                     userState:userState 
-                                                                   clientStub:self] 
-                             retain];
+                                                                   clientStub:self];
         
         [authRefreshRequest execute];
     }

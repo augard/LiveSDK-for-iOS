@@ -44,7 +44,7 @@ currentViewController:(UIViewController *)currentViewController
         _client = [client retain];
         _scopes = [scopes copy];
         _currentViewController = [currentViewController retain];
-        _delegate = [delegate retain];
+        _delegate = delegate;
         _userState = [userState retain];
         _status = AuthNotStarted;
     }
@@ -53,16 +53,20 @@ currentViewController:(UIViewController *)currentViewController
 }
 
 - (void)dealloc
-{    
+{
+    _delegate = nil;
+    
     [_client release];
     [_scopes release];
-    [_delegate release];
     [_userState release];
     
     [_authCode release];
     [_session release];
     [_error release];
+
     [_currentViewController release];
+    
+    _authViewController.delegate = nil;
     [_authViewController release];
     [_tokenConnection release];
     [_tokenResponseData release];
@@ -77,6 +81,8 @@ currentViewController:(UIViewController *)currentViewController
 
 - (void)execute
 {
+    [self retain];
+    
     [self process];
 }
 
@@ -122,7 +128,8 @@ currentViewController:(UIViewController *)currentViewController
                 [(UINavigationController *)self.currentViewController popViewControllerAnimated:YES];
             else
                 [self.currentViewController dismissModalViewControllerAnimated:YES];
-            self.currentViewController = nil;  
+            self.currentViewController = nil;
+            self.authViewController.delegate = nil;
             self.authViewController = nil;
         }
         else
@@ -134,6 +141,8 @@ currentViewController:(UIViewController *)currentViewController
 
 - (void)complete
 {
+    [self release];
+    
     [self dismissModal];
     [self updateStatus:AuthCompleted];
     _client.authRequest = nil;
@@ -166,11 +175,12 @@ currentViewController:(UIViewController *)currentViewController
 
     NSString *nibName = @"LiveAuthDialog_iPhone";
     
-    self.authViewController = [[LiveAuthDialog alloc] initWithNibName:nibName
-                                                               bundle:[LiveAuthHelper getSDKBundle] 
-                                                             startUrl:authRequestUrl 
-                                                               endUrl:[LiveAuthHelper getDefaultRedirectUrlString]
-                                                             delegate:self];
+    [_authViewController release];
+    _authViewController = [[LiveAuthDialog alloc] initWithNibName:nibName
+                                                           bundle:[LiveAuthHelper getSDKBundle]
+                                                         startUrl:authRequestUrl
+                                                           endUrl:[LiveAuthHelper getDefaultRedirectUrlString]
+                                                         delegate:self];
     
     if ([self.currentViewController isKindOfClass:[UINavigationController class]]) {
         [self.currentViewController view];

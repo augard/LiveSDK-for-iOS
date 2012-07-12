@@ -158,8 +158,8 @@ NSString * LIVE_ENDPOINT_LOGIN_HOST = @"login.live.com";
 
 + (id) readAuthResponse:(NSData *)data
 {
-    NSString* responseString = [[NSString alloc] initWithData:data
-                                                     encoding:NSUTF8StringEncoding];
+    NSString* responseString = [[[NSString alloc] initWithData:data
+                                                     encoding:NSUTF8StringEncoding] autorelease];
     NSError *error = nil;
     NSDictionary *params = [MSJSONParser parseText:responseString 
                                              error:&error ];

@@ -30,8 +30,8 @@ const NSUInteger BUFFERSIZE = 4096;
 
 - (void)dealloc
 {
+    _delegate = nil;
     [_stream release];
-    [_delegate release];
     [data release];
     
     [super dealloc];
