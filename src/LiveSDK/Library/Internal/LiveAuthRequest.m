@@ -124,10 +124,12 @@ currentViewController:(UIViewController *)currentViewController
         // Adding a checking logic and wait for the modal dialog to appear before we can dismiss it.
         if (self.authViewController.canDismiss) 
         {
-            if ([self.currentViewController isKindOfClass:[UINavigationController class]])
-                [(UINavigationController *)self.currentViewController popViewControllerAnimated:YES];
-            else
+            if ([self.currentViewController isKindOfClass:[UINavigationController class]]) {
+                if ([(UINavigationController *)[self currentViewController] topViewController] == _authViewController)
+                    [(UINavigationController *)self.currentViewController popViewControllerAnimated:YES];
+            } else {
                 [self.currentViewController dismissModalViewControllerAnimated:YES];
+            }
             self.currentViewController = nil;
             self.authViewController.delegate = nil;
             self.authViewController = nil;
@@ -183,9 +185,9 @@ currentViewController:(UIViewController *)currentViewController
                                                          delegate:self];
     
     if ([self.currentViewController isKindOfClass:[UINavigationController class]]) {
-        [self.currentViewController view];
-        [self.currentViewController.navigationItem setLeftBarButtonItem:nil];
-        [(UINavigationController *)self.currentViewController pushViewController:self.authViewController animated:YES];
+        [_authViewController view];
+        [_authViewController.navigationItem setLeftBarButtonItem:nil];
+        [(UINavigationController *)self.currentViewController pushViewController:_authViewController animated:YES];
     } else {
         
         // Create a Navigation controller

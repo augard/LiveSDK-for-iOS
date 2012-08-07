@@ -12,7 +12,7 @@
 
 @implementation LiveAuthRefreshRequest
 
-@synthesize tokenConnection, tokenResponseData;
+@synthesize tokenConnection, tokenResponseData, client = _client;
 
 - (id)initWithClientId:(NSString *)clientId
                  scope:(NSArray *)scopes

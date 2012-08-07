@@ -50,6 +50,8 @@
     [_session release];
     [_authRequest release];
     [_storage release];
+    
+    [authRefreshRequest setClient:nil];
     [authRefreshRequest release];
     
     [super dealloc];
