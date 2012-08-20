@@ -128,7 +128,9 @@ currentViewController:(UIViewController *)currentViewController
                 if ([(UINavigationController *)[self currentViewController] topViewController] == _authViewController)
                     [(UINavigationController *)self.currentViewController popViewControllerAnimated:YES];
             } else {
-                [self.currentViewController dismissModalViewControllerAnimated:YES];
+                UIViewController *controller = self.currentViewController;
+                self.currentViewController = nil;
+                [controller dismissModalViewControllerAnimated:YES];
             }
             self.currentViewController = nil;
             self.authViewController.delegate = nil;
@@ -143,6 +145,10 @@ currentViewController:(UIViewController *)currentViewController
 
 - (void)complete
 {
+    if (!self.currentViewController) {
+        [self authDialogDisappeared];
+        return;
+    }
     [self release];
     
     [self dismissModal];
@@ -195,12 +201,12 @@ currentViewController:(UIViewController *)currentViewController
                                                autorelease];
         
         
-        if ([self.currentViewController respondsToSelector:@selector(initNavigationBar:)]) {
-            [self.currentViewController performSelector:@selector(initNavigationBar:) withObject:modalDialog.navigationBar];
+        if ([_authViewController respondsToSelector:@selector(initNavigationBar:)]) {
+            [_authViewController performSelector:@selector(initNavigationBar:) withObject:modalDialog.navigationBar];
             UIBarButtonItem *button = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"Cancel", nil)
                                                               target:self.authViewController action:@selector(dismissView:)];
-            [self.currentViewController view];
-            [self.currentViewController.navigationItem setLeftBarButtonItem:button];
+            [_authViewController view];
+            [_authViewController.navigationItem setLeftBarButtonItem:button];
             [modalDialog setModalPresentationStyle:UIModalPresentationFormSheet];
         }
         [self.currentViewController presentModalViewController:modalDialog
