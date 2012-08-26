@@ -135,6 +135,7 @@ currentViewController:(UIViewController *)currentViewController
             self.currentViewController = nil;
             self.authViewController.delegate = nil;
             self.authViewController = nil;
+            [self authDialogDisappeared];
         }
         else
         {
