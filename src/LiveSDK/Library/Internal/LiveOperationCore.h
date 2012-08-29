@@ -31,7 +31,7 @@
 @property (nonatomic, retain) NSDictionary *result;
 @property (nonatomic, retain) id connection;
 @property (nonatomic, retain) NSMutableData *responseData;
-@property (nonatomic, retain) id publicOperation;
+@property (nonatomic, assign) id publicOperation;
 @property (nonatomic, retain) NSHTTPURLResponse *httpResponse;
 @property (nonatomic, retain) NSError *httpError;
 

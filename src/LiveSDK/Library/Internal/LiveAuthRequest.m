@@ -229,6 +229,7 @@ currentViewController:(UIViewController *)currentViewController
                                                                   authCode:self.authCode]];
     
     self.tokenConnection = [LiveConnectionHelper createConnectionWithRequest:request delegate:self];
+    [(NSURLConnection *)self.tokenConnection start];
 }
 
 #pragma mark -  LiveAuthDialogDelegate

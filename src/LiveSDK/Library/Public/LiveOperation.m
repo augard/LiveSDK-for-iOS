@@ -16,7 +16,7 @@
     self = [super init];
     if (self) 
     {
-        liveOpCore = opCore;
+        liveOpCore = [opCore retain];
         liveOpCore.publicOperation = self;
     }
     
@@ -25,6 +25,7 @@
 
 - (void)dealloc 
 {
+    [liveOpCore release];
     liveOpCore = nil;
     
     [super dealloc];

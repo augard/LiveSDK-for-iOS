@@ -86,20 +86,50 @@
     _delegate = nil;
     
     [_method release];
+    _method = nil;
+    
     [_path release];
+    _path = nil;
+    
     [_requestBody release];
+    _requestBody = nil;
+    
     [_userState release];
+    _userState = nil;
+
     [_liveClient release];
+    _liveClient = nil;
+    
+    [_inputStream close];
     [_inputStream release];
+    _inputStream = nil;
+    
     [streamReader release];
+    streamReader = nil;
+    
     [request release];
+    request = nil;
+    
     [rawResult release];
+    rawResult = nil;
+    
     [result release];
+    result = nil;
+    
+    //[connection close];
     [connection release];
+    connection = nil;
+    
     [responseData release];
-    [publicOperation release];
+    responseData = nil;
+    
+    publicOperation = nil;
+    
     [httpResponse release];
+    httpResponse = nil;
+    
     [httpError release];
+    httpError = nil;
     
     [super dealloc];
 }
@@ -204,7 +234,9 @@
         [request setHTTPBody:self.requestBody];
     }
     
-    self.connection = [LiveConnectionHelper createConnectionWithRequest:request delegate:self];    
+    self.connection = [LiveConnectionHelper createConnectionWithRequest:request delegate:self];
+    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [(NSURLConnection *)self.connection start];
 }
 
 - (NSMutableData *)responseData
@@ -310,17 +342,19 @@ didReceiveResponse:(NSURLResponse *)response
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection 
 {
+    [self retain];
     [self operationCompleted];
-    
     self.connection = nil;
+    [self release];
 }
 
 - (void)connection:(NSURLConnection *)connection 
   didFailWithError:(NSError *)error 
 {
+    [self retain];
     self.connection = nil;
-    
     [self operationFailed:error];
+    [self release];
 }
 
 @end

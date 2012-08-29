@@ -30,8 +30,10 @@
                       liveClient:liveClient];
     if (self)
     {
-        _fileName = [fileName copy]; 
+        _fileName = [fileName copy];
         _overwrite = overwrite;
+        
+        [self retain];
     }
     
     return self;
@@ -55,6 +57,8 @@
     {
         _fileName = [fileName copy];
         _overwrite = overwrite;
+        
+        [self retain];
     }
     
     return self;
@@ -62,8 +66,11 @@
 
 - (void)dealloc
 {
+    _fileName = nil;
     [_fileName release];
+    _queryUploadLocationOp = nil;
     [_queryUploadLocationOp release];
+    _uploadPath = nil;
     [_uploadPath release];
     
     [super dealloc];
@@ -128,6 +135,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 - (void)liveOperationSucceeded:(LiveOperation *)operation
 {
     NSString *encodedFileNamePath = [_fileName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [_uploadPath release];
     _uploadPath = [[[operation.result valueForKey:@"upload_location"] 
                     stringByAppendingString:encodedFileNamePath] retain];
     if ([StringHelper isNullOrEmpty:_uploadPath])

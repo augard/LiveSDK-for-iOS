@@ -25,7 +25,7 @@ static id<LiveConnectionCreatorDelegate> overrideCreator = nil;
     }
     else
     {
-        return [NSURLConnection connectionWithRequest:request delegate:delegate];
+        return [[[NSURLConnection alloc] initWithRequest:request delegate:delegate startImmediately:NO] autorelease];
     }
 }
 @end

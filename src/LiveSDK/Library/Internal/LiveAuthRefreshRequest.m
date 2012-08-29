@@ -66,6 +66,7 @@
                                                                          scope:_scopes]];
     
     self.tokenConnection = [LiveConnectionHelper createConnectionWithRequest:request delegate:self];
+    [(NSURLConnection *)self.tokenConnection start];
 }
 
 - (void) complete

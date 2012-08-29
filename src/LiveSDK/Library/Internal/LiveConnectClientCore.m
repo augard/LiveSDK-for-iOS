@@ -47,9 +47,10 @@
 {    
     [_clientId release];
     [_scopes release];
-    [_session release];
-    [_authRequest release];
     [_storage release];
+    [_session release];
+    
+    [_authRequest release];
     
     [authRefreshRequest setClient:nil];
     [authRefreshRequest release];
