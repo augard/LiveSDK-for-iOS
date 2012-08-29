@@ -54,6 +54,7 @@
     {
         return;
     }
+    [self retain];
     
     if (self.httpError) 
     {
@@ -78,6 +79,7 @@
         
         self.completed = YES;
     }
+    [self release];
 }
 
 - (void) operationReceivedData:(NSData *)data

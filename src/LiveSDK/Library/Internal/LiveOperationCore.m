@@ -224,12 +224,14 @@
     if (completed) {
         return;
     }
+    [self retain];
     
     completed = YES;
     if ([_delegate respondsToSelector:@selector(liveOperationFailed:operation:)]) 
     {
         [_delegate liveOperationFailed:error operation:publicOperation];
     }
+    [self release];
 }
 
 - (void) operationCompleted
@@ -238,6 +240,7 @@
     {
         return;
     }
+    [self retain];
     
     NSString *textResponse;
     NSDictionary *response;
@@ -270,6 +273,7 @@
     
     completed = YES;
     self.responseData = nil;
+    [self release];
 }
 
 - (void) operationReceivedData:(NSData *)data
