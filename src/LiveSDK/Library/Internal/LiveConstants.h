@@ -10,7 +10,7 @@
 extern NSString * LIVE_ENDPOINT_API_HOST;
 extern NSString * LIVE_ENDPOINT_LOGIN_HOST;
 
-static const NSTimeInterval HTTP_REQUEST_TIMEOUT_INTERVAL = 30;
+static const NSTimeInterval HTTP_REQUEST_TIMEOUT_INTERVAL = 60;
 
 static const NSTimeInterval LIVE_AUTH_EXPIRE_VALUE_ADJUSTMENT = 3;
 static const NSTimeInterval LIVE_AUTH_REFRESH_TIME_BEFORE_EXPIRE = 30;

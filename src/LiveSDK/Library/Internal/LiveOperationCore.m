@@ -35,6 +35,7 @@
       responseData,
          completed,
          httpError;
+@synthesize retry = _retry;
 
 - (id) initWithMethod:(NSString *)method
                  path:(NSString *)path
@@ -352,8 +353,15 @@ didReceiveResponse:(NSURLResponse *)response
   didFailWithError:(NSError *)error 
 {
     [self retain];
+    
     self.connection = nil;
-    [self operationFailed:error];
+    
+    if (([error code] == 1003 || [error code] == 1001) && _retry == NO) {
+        _retry = YES;
+        [self sendRequest];
+    } else {
+        [self operationFailed:error];
+    }
     [self release];
 }
 

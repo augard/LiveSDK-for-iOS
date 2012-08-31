@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSMutableURLRequest *request; 
 
 @property (nonatomic) BOOL completed;
+@property (nonatomic) BOOL retry;
 @property (nonatomic, retain) NSString *rawResult;
 @property (nonatomic, retain) NSDictionary *result;
 @property (nonatomic, retain) id connection;
