@@ -77,7 +77,7 @@ const NSUInteger BUFFERSIZE = 4096;
             } 
             else 
             {
-                NSLog(@"no buffer!");
+                //NSLog(@"no buffer!");
             }
             
             break;
