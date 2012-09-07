@@ -335,6 +335,15 @@ didReceiveResponse:(NSURLResponse *)response
     [self operationReceivedData:data];
 }
 
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)aRequest redirectResponse:(NSURLResponse *)response
+{
+    if ([[[aRequest URL] absoluteString] hasSuffix:@"psid=1"])
+        return [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@&AVOverride=1&download", [[aRequest URL] absoluteString]]]
+                                cachePolicy:[aRequest cachePolicy] timeoutInterval:[aRequest timeoutInterval]];
+    else
+        return aRequest;
+}
+
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
                   willCacheResponse:(NSCachedURLResponse*)cachedResponse 
 {
