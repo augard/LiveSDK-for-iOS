@@ -84,6 +84,7 @@
 
 - (void) operationReceivedData:(NSData *)data
 {
+    [self retain];
     [self.responseData appendData:data];
     
     if ([self.delegate respondsToSelector:@selector(liveDownloadOperationProgressed:data:operation:)])
@@ -102,6 +103,7 @@
                                                   data:data 
                                              operation:self.publicOperation];
     }
+    [self release];
 }
 
 @end
