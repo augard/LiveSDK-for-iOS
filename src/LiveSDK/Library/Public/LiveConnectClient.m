@@ -456,9 +456,11 @@
               relative:NO];
 
     
-    return [_liveClientCore downloadFromPath:path 
-                                    delegate:delegate 
-                                   userState:userState];
+    id operation = [_liveClientCore downloadFromPath:path
+                                            delegate:delegate
+                                           userState:userState];
+    [operation retain];
+    return [operation autorelease];
 }
 
 - (LiveOperation *) uploadToPath:(NSString *)path
