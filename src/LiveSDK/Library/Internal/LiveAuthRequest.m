@@ -14,12 +14,20 @@
 #import "LiveConstants.h"
 #import "UrlHelper.h"
 
+
+@interface UIViewController (Private)
+
+- (void) initNavigationBar:(id)bar;
+
+@end
+
 @interface UIBarButtonItem (ISTHelper)
 
 + (id) itemWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 + (id) itemWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action;
 
 @end
+
 
 @implementation LiveAuthRequest
 

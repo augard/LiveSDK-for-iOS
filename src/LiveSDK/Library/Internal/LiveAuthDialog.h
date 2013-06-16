@@ -24,6 +24,7 @@
 
 @property (retain, nonatomic) IBOutlet UIWebView *webView;
 @property (readonly, nonatomic) BOOL canDismiss;
+- (void) dismissView:(id)sender;
 
 @property (nonatomic, assign) id<LiveAuthDialogDelegate> delegate;
 
