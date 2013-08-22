@@ -44,7 +44,7 @@
 }
 
 - (void)dealloc
-{    
+{ 
     [_clientId release];
     [_scopes release];
     [_storage release];
@@ -73,16 +73,16 @@
         return;
     }
     
-    LiveAuthRequest *authRequest = [[LiveAuthRequest alloc] initWithClient:self 
+    LiveAuthRequest *authRequest = [[[LiveAuthRequest alloc] initWithClient:self 
                                                                     scopes:scopes 
                                                      currentViewController:currentViewController 
                                                                   delegate:delegate 
-                                                                 userState:userState];
+                                                                 userState:userState]
+                                    autorelease];
     
     self.authRequest = authRequest;
     
-    [authRequest execute];    
-    [authRequest release];
+    [authRequest execute]; 
 }
 
 - (BOOL) hasPendingUIRequest
@@ -196,7 +196,7 @@
 - (LiveOperation *) uploadToPath:(NSString *)path
                         fileName:(NSString *)fileName
                             data:(NSData *)data
-                       overwrite:(BOOL)overwrite
+                       overwrite:(LiveUploadOverwriteOption)overwrite
                         delegate:(id <LiveUploadOperationDelegate>)delegate
                        userState:(id)userState
 {
@@ -217,7 +217,7 @@
 - (LiveOperation *) uploadToPath:(NSString *)path
                         fileName:(NSString *)fileName
                      inputStream:(NSInputStream *)inputStream
-                       overwrite:(BOOL)overwrite
+                       overwrite:(LiveUploadOverwriteOption)overwrite
                         delegate:(id <LiveUploadOperationDelegate>)delegate
                        userState:(id)userState
 {

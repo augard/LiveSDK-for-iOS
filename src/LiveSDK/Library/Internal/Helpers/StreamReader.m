@@ -50,7 +50,7 @@ const NSUInteger BUFFERSIZE = 4096;
     [self.stream close];
     [self.stream removeFromRunLoop:[NSRunLoop currentRunLoop]
                            forMode:NSDefaultRunLoopMode];
-
+    self.stream.delegate = nil;
     self.stream = nil;
     self.data = nil;
     self.delegate = nil;    

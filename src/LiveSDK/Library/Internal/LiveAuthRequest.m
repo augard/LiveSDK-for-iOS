@@ -62,7 +62,8 @@ currentViewController:(UIViewController *)currentViewController
 
 - (void)dealloc
 {
-    _delegate = nil;
+    _delegate = nil; 
+    _authViewController.delegate = nil;
     
     [_client release];
     [_scopes release];
@@ -162,7 +163,6 @@ currentViewController:(UIViewController *)currentViewController
     
     [self dismissModal];
     [self updateStatus:AuthCompleted];
-    _client.authRequest = nil;
 }
 
 - (void)process
@@ -191,6 +191,11 @@ currentViewController:(UIViewController *)currentViewController
                                                               scopes:_scopes];
 
     NSString *nibName = @"LiveAuthDialog_iPhone";
+    _authViewController = [[LiveAuthDialog alloc] initWithNibName:nibName
+                                                           bundle:[LiveAuthHelper getSDKBundle] 
+                                                         startUrl:authRequestUrl 
+                                                           endUrl:[LiveAuthHelper getDefaultRedirectUrlString]
+                                                         delegate:self];
     
     [_authViewController release];
     _authViewController = [[LiveAuthDialog alloc] initWithNibName:nibName
