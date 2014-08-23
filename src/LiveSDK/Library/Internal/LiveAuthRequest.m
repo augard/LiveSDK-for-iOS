@@ -23,8 +23,8 @@
 
 @interface UIBarButtonItem (ISTHelper)
 
-+ (id) itemWithTitle:(NSString *)title target:(id)target action:(SEL)action;
-+ (id) itemWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action;
++ (id) buttonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
++ (id) buttonWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action;
 
 @end
 
@@ -217,8 +217,8 @@ currentViewController:(UIViewController *)currentViewController
         
         if ([_authViewController respondsToSelector:@selector(initNavigationBar:)]) {
             [_authViewController performSelector:@selector(initNavigationBar:) withObject:modalDialog.navigationBar];
-            UIBarButtonItem *button = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                              target:self.authViewController action:@selector(dismissView:)];
+            UIBarButtonItem *button = [UIBarButtonItem buttonWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                target:self.authViewController action:@selector(dismissView:)];
             [_authViewController view];
             [_authViewController.navigationItem setLeftBarButtonItem:button];
             [modalDialog setModalPresentationStyle:UIModalPresentationFormSheet];
